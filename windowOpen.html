@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open and Close Tabs</title>
+  <style>
+    /* General Reset */
+*{
+box-sizing: border-box
+}
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #4e73df, #1c6ed3);
+      color: #fff;
+      overflow: hidden;
+    }
+
+    /* Centered Container */
+    .container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      max-width: 450px;
+      width: 90%;
+      box-sizing: border-box;
+    }
+
+    /* Heading Style */
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      color: #333;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    /* Label Style */
+    label {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #333;
+      text-align: left;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    /* Input Fields Style */
+    input {
+      font-size: 1rem;
+      padding: 14px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 380px;
+      background-color: #f9f9f9;
+      color: #333;
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      border: 2px solid #4caf50;
+      box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+    }
+
+    /* Button Style */
+    #openTabsButton {
+      background-color: #28a745;
+      color: #fff;
+      font-size: 1.3rem;
+      padding: 18px 35px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      margin-top: 20px;
+      width: 100%;
+      max-width: 380px;
+    }
+
+    #openTabsButton:hover {
+      background-color: #218838;
+      transform: scale(1.05);
+    }
+
+    #openTabsButton:active {
+      transform: scale(0.95);
+    }
+
+    /* Fade-in Animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Footer Style */
+    footer {
+      position: absolute;
+      bottom: 20px;
+      text-align: center;
+      width: 100%;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    footer a {
+      color: #ffcc00;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .container {
+        padding: 25px;
+      }
+
+      input {
+        font-size: 0.9rem;
+        padding: 12px;
+      }
+
+      #openTabsButton {
+        font-size: 1.2rem;
+        padding: 15px 30px;
+      }
+    }
+
+    /* Mobile-first responsiveness */
+    @media (max-width: 480px) {
+      .container {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      input {
+        padding: 10px;
+        font-size: 0.9rem;
+      }
+
+      #openTabsButton {
+        font-size: 1.1rem;
+        padding: 12px 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Open and Close Tabs</h1>
+    <div>
+      <label for="urlInput">Enter URL:</label>
+      <input type="text" id="urlInput" placeholder="e.g. https://example.com" />
+    </div>
+    <div>
+      <label for="timesInput">How many times to open:</label>
+      <input type="number" id="timesInput" placeholder="e.g. 5" min="1" />
+    </div>
+    <button id="openTabsButton">Click to Open Tabs</button>
+  </div>
+
+  <footer>
+    Built with ❤️ by <a href="#">Abul Bashar</a>
+  </footer>
+
+  <script>
+    function openAndCloseURLMultipleTimes(url, times) {
+      if (!url || typeof url !== "string") {
+        console.error("Invalid URL. Please provide a valid URL.");
+        return;
+      }
+
+      if (!times || typeof times !== "number" || times <= 0) {
+        console.error("Invalid number of times. Please provide a positive integer.");
+        return;
+      }
+
+      // Open the URL multiple times and close immediately after loading
+      for (let i = 0; i < times; i++) {
+        const newWindow = window.open(url, `_blank`);
+        if (newWindow) {
+          newWindow.onload = () => {
+            console.log(`Tab ${i + 1} loaded. Closing...`);
+            newWindow.close(); // Close the tab after it has loaded
+          };
+        } else {
+          console.warn("Failed to open a tab. Pop-up blocker might be active.");
+        }
+      }
+    }
+
+    document.getElementById("openTabsButton").addEventListener("click", function () {
+      const url = document.getElementById("urlInput").value;
+      const times = parseInt(document.getElementById("timesInput").value, 10);
+
+      if (url && times) {
+        openAndCloseURLMultipleTimes(url, times);
+      } else {
+        alert("Please fill in both the URL and the number of times.");
+      }
+    });
+  </script>
+</body>
+</html>
